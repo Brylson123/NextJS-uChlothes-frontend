@@ -5,8 +5,10 @@ interface response {
     success: boolean
 }
 
-export async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest, res: NextResponse) {
     const jwtToken = req.cookies.get("jwt")?.value
+    console.log(jwtToken)
+    console.log(res.cookies.get("jwt")?.value)
     if (!jwtToken) {
         return NextResponse.redirect(new URL('/admin/login', req.url));
     }
