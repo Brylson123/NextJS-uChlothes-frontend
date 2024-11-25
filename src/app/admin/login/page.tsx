@@ -33,14 +33,15 @@ export default function Login() {
             });
 
             const data = await res.json();
+            console.log(data)
             setLoading(false);
 
             if (!res.ok || !data.success) {
                 setMessage('Username or password are incorrect!');
                 setMessageType('error');
             } else {
-                document.cookie = `jwt=${data.token}; Path=/; HttpOnly=false; Secure=true; SameSite=Lax`;
-
+                document.cookie = `jwt=${data.jwtToken}; Path=/; HttpOnly=false; Secure=true; SameSite=Lax`;
+                console.log(data)
                 setMessage('Successfully logged in!');
                 setMessageType('success');
 
