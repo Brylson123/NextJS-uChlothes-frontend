@@ -8,7 +8,7 @@ interface response {
 }
 
 export async function middleware(req: NextRequest) {
-    const jwtToken = await cookies().get("jwt")?.value
+    const jwtToken = await cookies().get("vercel-feature-flags")?.value
     console.log(jwtToken)
     if (!jwtToken) {
         return NextResponse.redirect(new URL('/admin/login', req.url));
