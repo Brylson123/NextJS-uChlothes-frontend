@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import {cookies} from "next/headers";
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -33,7 +34,7 @@ export default function Login() {
             });
 
             const data = await res.json();
-            console.log(data)
+            console.log(data.jwtToken)
             setLoading(false);
 
             if (!res.ok || !data.success) {
@@ -42,10 +43,20 @@ export default function Login() {
             } else {
                 setMessage('Successfully logged in!');
                 setMessageType('success');
-
+                // const cookieStore = await cookies()
+                // cookieStore.set({
+                //     name: "jwt",
+                //     value: data.jwtToken,
+                //     httpOnly: true,
+                //     domain: "https://next-js-u-clothes-frontend.vercel.app",
+                //     secure: true,
+                //     maxAge: 3600,
+                //     path: '/',
+                //     sameSite: 'none',
+                // })
                 setTimeout(() => {
                     router.push('/admin/dashboard');
-                }, 1000);
+                }, 2000);
             }
         } catch (err: any) {
             setLoading(false);
