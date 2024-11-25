@@ -3,15 +3,18 @@ const nextConfig = {
     images: {
         remotePatterns: [
             {
-                protocol: 'http',
-                hostname: 'localhost',
-                port: '8080',
+                protocol: 'https',
+                hostname: 'next-js-u-clothes-frontend.vercel.app',
                 pathname: '/**',
             },
             {
                 protocol: 'https',
                 hostname: 'storage.googleapis.com',
-                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: `${process.env.NEXT_PUBLIC_API_URL}`,
                 pathname: '/**',
             },
         ],
