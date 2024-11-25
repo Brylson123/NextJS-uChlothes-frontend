@@ -14,7 +14,7 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: `${process.env.NEXT_PUBLIC_API_URL}`,
+                hostname: `spring-boot-app-485887907071.europe-west2.run.app`,
                 pathname: '/**',
             },
         ],

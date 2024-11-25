@@ -9,13 +9,21 @@ interface response {
 
 export async function middleware(req: NextRequest) {
     const jwtToken = await cookies().get("jwt")?.value
+    console.log(jwtToken)
     if (!jwtToken) {
         return NextResponse.redirect(new URL('/admin/login', req.url));
     }
     try {
 
         const {payload} = await jose.jwtVerify(jwtToken, new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET));
-        const isTokenValid = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/getUserByToken/${jwtToken}`)
+        const isTokenValid = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/getUserByToken/${jwtToken}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log(isTokenValid)
         const isTokenValidResponse: response = await isTokenValid.json();
         console.log("JWT Token from cookies: ", jwtToken);
         console.log("Response from Backend: ", isTokenValidResponse.success);
