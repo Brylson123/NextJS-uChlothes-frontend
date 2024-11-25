@@ -1,6 +1,6 @@
 'use client';
-import React, {useState} from 'react';
-import {useRouter} from 'next/navigation';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -11,7 +11,7 @@ export default function Login() {
     const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
     const router = useRouter();
 
-    const handleSubmit = async (e: React.FormEvent ) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
         setMessage(null);
@@ -27,20 +27,23 @@ export default function Login() {
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/login`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, password}),
-                credentials: 'include'
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+                credentials: 'include',
             });
-            const data = await res.json();
 
+            const data = await res.json();
             setLoading(false);
 
             if (!res.ok || !data.success) {
                 setMessage('Username or password are incorrect!');
                 setMessageType('error');
             } else {
+                document.cookie = `jwt=${data.token}; Path=/; HttpOnly=false; Secure=true; SameSite=Lax`;
+
                 setMessage('Successfully logged in!');
                 setMessageType('success');
+
                 setTimeout(() => {
                     router.push('/admin/dashboard');
                 }, 1000);
@@ -59,7 +62,9 @@ export default function Login() {
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label htmlFor="username" className="block mb-1">Username:</label>
+                        <label htmlFor="username" className="block mb-1">
+                            Username:
+                        </label>
                         <input
                             type="text"
                             id="username"
@@ -69,7 +74,9 @@ export default function Login() {
                         />
                     </div>
                     <div>
-                        <label htmlFor="password" className="block mb-1">Password:</label>
+                        <label htmlFor="password" className="block mb-1">
+                            Password:
+                        </label>
                         <input
                             type="password"
                             id="password"
@@ -85,12 +92,25 @@ export default function Login() {
                             disabled={loading}
                         >
                             {loading ? (
-                                <svg className="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg"
-                                     fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                            strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor"
-                                          d="M4 12a8 8 0 018-8V0C5.372 0 0 5.372 0 12h4z"></path>
+                                <svg
+                                    className="animate-spin h-5 w-5 mx-auto"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <circle
+                                        className="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        strokeWidth="4"
+                                    ></circle>
+                                    <path
+                                        className="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.372 0 0 5.372 0 12h4z"
+                                    ></path>
                                 </svg>
                             ) : (
                                 'Login'
@@ -100,7 +120,12 @@ export default function Login() {
                 </form>
                 {message && (
                     <div
-                        className={`mt-4 p-4 border rounded ${messageType === 'success' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-red-100 border-red-400 text-red-700'}`}>
+                        className={`mt-4 p-4 border rounded ${
+                            messageType === 'success'
+                                ? 'bg-green-100 border-green-400 text-green-700'
+                                : 'bg-red-100 border-red-400 text-red-700'
+                        }`}
+                    >
                         {message}
                     </div>
                 )}
