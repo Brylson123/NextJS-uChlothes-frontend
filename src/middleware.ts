@@ -7,7 +7,7 @@ interface response {
 }
 
 export async function middleware(req: NextRequest) {
-    const jwtToken = await req.cookies.get("jwt")?.value
+    const jwtToken =  req.cookies.get("jwt")?.value
     console.log(jwtToken)
     if (!jwtToken) {
         return NextResponse.redirect(new URL('/admin/login', req.url));
