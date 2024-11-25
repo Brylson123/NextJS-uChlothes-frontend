@@ -8,6 +8,8 @@ interface response {
 export async function middleware(req: NextRequest) {
     const jwtToken = req.cookies.get("jwt")?.value;
     console.log(jwtToken);
+    console.log('Cookies:', req.cookies);
+
     if (!jwtToken) {
         return NextResponse.redirect(new URL('/admin/login', req.url));
     }
