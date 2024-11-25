@@ -1,32 +1,29 @@
-// src/app/middleware.ts
-import {NextRequest, NextResponse} from 'next/server';
-import * as jose from "jose";
+import { NextRequest, NextResponse } from 'next/server';
+import * as jose from 'jose';
 
-interface response {
-    success: boolean
+interface Response {
+    success: boolean;
 }
 
 export async function middleware(req: NextRequest) {
-    const jwtToken = await req.cookies.get("jwt")?.value
-    console.log(jwtToken)
+    const jwtToken = req.cookies.get('jwt')?.value;
+    console.log('JWT Token:', jwtToken);
+
     if (!jwtToken) {
         return NextResponse.redirect(new URL('/admin/login', req.url));
     }
-    try {
 
-        const {payload} = await jose.jwtVerify(jwtToken, new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET));
-        const isTokenValid = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/getUserByToken/${jwtToken}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        console.log(isTokenValid)
-        const isTokenValidResponse: response = await isTokenValid.json();
-        console.log("JWT Token from cookies: ", jwtToken);
-        console.log("Response from Backend: ", isTokenValidResponse.success);
-        console.log(isTokenValidResponse.success)
+    try {
+        const { payload } = await jose.jwtVerify(
+            jwtToken,
+            new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET)
+        );
+
+        const isTokenValid = await fetch(`${process.env.NEXT_PUBLIC_API_PROXY}/user/getUserByToken/${jwtToken}`);
+
+        const isTokenValidResponse: Response = await isTokenValid.json();
+        console.log('Response from Backend:', isTokenValidResponse.success);
+
         if (!payload || payload.role !== 'ADMIN' || !isTokenValidResponse.success) {
             return NextResponse.redirect(new URL('/admin/login', req.url));
         }
@@ -39,7 +36,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: [
-        '/admin/:path((?!login).*)',
-    ],
+    matcher: ['/admin/:path((?!login).*)'],
 };
