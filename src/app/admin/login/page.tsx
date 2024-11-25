@@ -40,8 +40,6 @@ export default function Login() {
                 setMessage('Username or password are incorrect!');
                 setMessageType('error');
             } else {
-                document.cookie = `jwt=${data.jwtToken}; Path=/; HttpOnly=false; Secure=true; SameSite=Lax`;
-                console.log(document.cookie = `jwt=${data.jwtToken}; Path=/; HttpOnly=false; Secure=true; SameSite=Lax`)
                 setMessage('Successfully logged in!');
                 setMessageType('success');
 
