@@ -62,7 +62,7 @@ export default function AdminDashboard() {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost:8080/user/logout', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/logout`, {
                 method: 'GET',
                 credentials: 'include'
             });
