@@ -17,6 +17,8 @@ export async function middleware(req: NextRequest) {
         const {payload} = await jose.jwtVerify(jwtToken, new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET));
         const isTokenValid = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/getUserByToken/${jwtToken}`)
         const isTokenValidResponse: response = await isTokenValid.json();
+        console.log("JWT Token from cookies: ", jwtToken);
+        console.log("Response from Backend: ", isTokenValidResponse.success);
         console.log(isTokenValidResponse.success)
         if (!payload || payload.role !== 'ADMIN' || !isTokenValidResponse.success) {
             return NextResponse.redirect(new URL('/admin/login', req.url));
