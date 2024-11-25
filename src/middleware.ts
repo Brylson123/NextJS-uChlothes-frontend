@@ -5,19 +5,17 @@ interface response {
     success: boolean
 }
 
-export async function middleware(req: NextRequest, res: NextResponse) {
-    const jwtToken = req.cookies.get("jwt")?.value
-    console.log(jwtToken)
-    console.log(res.cookies.get("jwt")?.value)
+export async function middleware(req: NextRequest) {
+    const jwtToken = req.cookies.get("jwt")?.value;
+    console.log(jwtToken);
     if (!jwtToken) {
         return NextResponse.redirect(new URL('/admin/login', req.url));
     }
     try {
-
         const {payload} = await jose.jwtVerify(jwtToken, new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET));
-        const isTokenValid = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/getUserByToken/${jwtToken}`)
+        const isTokenValid = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/getUserByToken/${jwtToken}`);
         const isTokenValidResponse: response = await isTokenValid.json();
-        console.log(isTokenValidResponse.success)
+        console.log(isTokenValidResponse.success);
         if (!payload || payload.role !== 'ADMIN' || !isTokenValidResponse.success) {
             return NextResponse.redirect(new URL('/admin/login', req.url));
         }
