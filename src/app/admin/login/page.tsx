@@ -41,7 +41,7 @@ export default function Login() {
                 setMessageType('error');
             } else {
                 document.cookie = `jwt=${data.jwtToken}; Path=/; HttpOnly=false; Secure=true; SameSite=Lax`;
-                console.log(data)
+                console.log(document.cookie = `jwt=${data.jwtToken}; Path=/; HttpOnly=false; Secure=true; SameSite=Lax`)
                 setMessage('Successfully logged in!');
                 setMessageType('success');
 
