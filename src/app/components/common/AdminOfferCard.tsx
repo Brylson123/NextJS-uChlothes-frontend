@@ -12,7 +12,7 @@ interface AdminOfferCardProps {
 
 const AdminOfferCard: React.FC<AdminOfferCardProps> = ({ id, name, imageName, price, onDelete }) => {
     const router = useRouter();
-    const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}/image/${imageName}`;
+    const imageUrl = `https://storage.googleapis.com/${process.env.NEXT_PUBLIC_BUCKET_NAME}/${imageName}`;
     const [isDeleteConfirmationVisible, setDeleteConfirmationVisible] = useState(false);
 
     const handleEdit = () => {
