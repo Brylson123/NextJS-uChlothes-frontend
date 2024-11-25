@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    async rewrites() {
+        return [
+            {
+                source: '/api/:path*',
+                destination: 'https://spring-boot-app-485887907071.europe-west2.run.app/:path*', 
+            },
+        ];
+    },
     images: {
         remotePatterns: [
             {
