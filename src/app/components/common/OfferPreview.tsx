@@ -27,7 +27,7 @@ const OfferPreview: React.FC<OfferPreviewProps> = ({ formData }) => {
             };
             reader.readAsDataURL(imageFile);
         } else if (imageName) {
-            setImagePreview(`${process.env.NEXT_PUBLIC_API_URL}/image/${imageName}`);
+            setImagePreview(`https://storage.googleapis.com/${process.env.NEXT_PUBLIC_BUCKET_NAME}/${imageName}`);
         } else {
             setImagePreview('');
         }

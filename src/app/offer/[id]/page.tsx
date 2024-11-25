@@ -76,7 +76,7 @@ const OfferDetail: React.FC = () => {
             <div className="max-w-7xl mx-auto py-8 flex">
                 <div className="w-1/2">
                     <Image
-                        src={`${process.env.NEXT_PUBLIC_API_URL}/image/${offer.imageName}`}
+                        src={`https://storage.googleapis.com/${process.env.NEXT_PUBLIC_BUCKET_NAME}/${offer.imageName}`}
                         alt={offer.name}
                         width={600}
                         height={600}
