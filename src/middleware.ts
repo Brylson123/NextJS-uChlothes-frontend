@@ -1,6 +1,5 @@
 // src/app/middleware.ts
 import {NextRequest, NextResponse} from 'next/server';
-import {cookies} from "next/headers";
 import * as jose from "jose";
 
 interface response {
@@ -8,7 +7,7 @@ interface response {
 }
 
 export async function middleware(req: NextRequest) {
-    const jwtToken = await cookies().get("jwt")?.value
+    const jwtToken = await req.cookies.get("jwt")?.value
     console.log(jwtToken)
     if (!jwtToken) {
         return NextResponse.redirect(new URL('/admin/login', req.url));
